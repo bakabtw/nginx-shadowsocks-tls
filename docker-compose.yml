@@ -29,4 +29,4 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx/letsencrypt/:/etc/letsecrypt/
-    command: certonly --standalone --preferred-challenges http --dry-run --email ${EMAIL} --agree-tos --no-eff-email -d ${DOMAIN} -d www.${DOMAIN}
+    command: certonly --standalone --preferred-challenges http --dry-run --email ${EMAIL} --agree-tos --no-eff-email --cert-path /etc/letsencrypt/keys/default/ --key-path /etc/letsencrypt/keys/default/ --fullchain-path /etc/letsencrypt/keys/default/ -d ${DOMAIN} -d www.${DOMAIN}
