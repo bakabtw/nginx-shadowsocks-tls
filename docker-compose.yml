@@ -1,0 +1,32 @@
+version: '3.5'
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./nginx/letsencrypt/:/etc/letsencrypt/
+      - ./nginx/www/:/usr/share/www/
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - shadowsocks
+  shadowsocks:
+    image: nickleefly/shadowsocks-libev
+    container_name: shadowsocks
+    restart: unless-stopped
+#    ports:
+#      - "1984:8388"
+    environment:
+      - PASSWORD=password
+      - ARGS=--plugin v2ray-plugin --plugin-opts server;
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    restart: unless-stopped
+    volumes:
+      - ./nginx/letsencrypt/:/etc/letsecrypt/
+    command: certonly --webroot --dry-run --email example@example.com --agree-tos --no-eff-email -d example.com -d www.example.com
