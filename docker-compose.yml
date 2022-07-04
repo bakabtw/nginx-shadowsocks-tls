@@ -21,7 +21,7 @@ services:
 #    ports:
 #      - "1984:8388"
     environment:
-      - PASSWORD=password
+      - PASSWORD=${SS_PASSWORD}
       - ARGS=--plugin v2ray-plugin --plugin-opts server;
   certbot:
     image: certbot/certbot
@@ -29,4 +29,4 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx/letsencrypt/:/etc/letsecrypt/
-    command: certonly --standalone --preferred-challenges http --dry-run --email example@example.com --agree-tos --no-eff-email -d example.com -d www.example.com
+    command: certonly --standalone --preferred-challenges http --dry-run --email ${EMAIL} --agree-tos --no-eff-email -d ${DOMAIN} -d www.${DOMAIN}
